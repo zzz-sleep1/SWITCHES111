@@ -614,7 +614,7 @@ void recognizeCommandlineArguments(int argc, char **argv){
             // Read the path of the application
             bzero(buff, sizeof(buff));
             strcpy(buff, argv[++i]);
-            nsga->path = (char*)malloc(sizeof(char) * strlen(buff));
+            nsga->path = (char*)malloc(sizeof(char) * (strlen(buff) + 1));
             strcpy(nsga->path, buff);
             
             assignmentPolicy = SCHED_NSGA;
