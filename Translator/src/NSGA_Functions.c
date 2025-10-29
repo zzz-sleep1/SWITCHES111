@@ -237,10 +237,24 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
     kernel				**tempKernel;
     Child               *tempChild = (*population)->child;
     
-    int					kernelAvailability[kernels];
-    bool				reassignFlag = FALSE;
+    const int           totalHardwareThreads = maxCores * hThreads;
+    const int           availabilityCount = (kernels > totalHardwareThreads) ? kernels : totalHardwareThreads;
+    bool                *kernelAvailability = NULL;
+    bool                reassignFlag = FALSE;
     int                 temp = -1;
 
+    if(availabilityCount <= 0)
+    {
+        ERROR_COMMANDS("Invalid hardware configuration [ cores: %d, threads: %d, kernels: %d ]!", maxCores, hThreads, kernels)
+        exit(-1);
+    }
+
+    kernelAvailability = (bool*)malloc(sizeof(bool) * availabilityCount);
+    if(!kernelAvailability)
+    {
+        ERROR_COMMANDS("Failed to allocate memory for [ %s ]!", "kernel availability")
+        exit(-1);
+    }
     
     for(j = 0; j < nsga->population; j++)
     {
@@ -304,7 +318,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                 while(tempFunction)
                 {
                     reassignFlag = FALSE;
-                    for(a = 0; a < kernels; a++)
+                    for(a = 0; a < availabilityCount; a++)
                         kernelAvailability[a] = TRUE;
                     
                     tempTask = tempFunction->tasks;
@@ -330,7 +344,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                                 }while(1);
                             }
                             
-                            for(a = 0; a < kernels; a++)
+                            for(a = 0; a < availabilityCount; a++)
                             {
                                 if(kernelAvailability[a] == TRUE)
                                 {
@@ -371,7 +385,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                                     }while(1);
                                 }
                                 
-                                for(a = 0; a < kernels; a++)
+                                for(a = 0; a < availabilityCount; a++)
                                 {
                                     if(kernelAvailability[a] == TRUE)
                                     {
@@ -393,6 +407,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
         tempChild = tempChild->next;
     }
      
+    free(kernelAvailability);
      
     /* SOLUTION 2 BUT DOESN'T TAKE INTO ACCOUNT THE TASKS TO BE EXECUTED BY MASTER_THREAD
      * 

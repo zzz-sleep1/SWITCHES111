@@ -2295,7 +2295,7 @@ void addToIndexes(arrayIndex** indexes, int indexStartInt, int indexEndInt, char
 		
 		if(indexStartStr)
 		{
-			(*indexes)->start.localStr = (char *)malloc(sizeof(char)*strlen(indexStartStr));
+			(*indexes)->start.localStr = (char *)malloc(sizeof(char) * (strlen(indexStartStr) + 1));
 			strcpy((*indexes)->start.localStr, indexStartStr);
 		}
 		else
@@ -2303,7 +2303,7 @@ void addToIndexes(arrayIndex** indexes, int indexStartInt, int indexEndInt, char
 		
 		if(indexEndStr)
 		{
-			(*indexes)->end.localStr = (char *)malloc(sizeof(char)*strlen(indexEndStr));
+			(*indexes)->end.localStr = (char *)malloc(sizeof(char) * (strlen(indexEndStr) + 1));
 			strcpy((*indexes)->end.localStr, indexEndStr);
 		}
 		else
@@ -2322,7 +2322,7 @@ void addToIndexes(arrayIndex** indexes, int indexStartInt, int indexEndInt, char
 		
 		if(indexStartStr)
 		{
-			tempIndexes->next->start.localStr = (char *)malloc(sizeof(char)*strlen(indexStartStr));
+			tempIndexes->next->start.localStr = (char *)malloc(sizeof(char) * (strlen(indexStartStr) + 1));
 			strcpy(tempIndexes->next->start.localStr, indexStartStr);
 		}
 		else
@@ -2330,7 +2330,7 @@ void addToIndexes(arrayIndex** indexes, int indexStartInt, int indexEndInt, char
 		
 		if(indexEndStr)
 		{
-			tempIndexes->next->end.localStr = (char *)malloc(sizeof(char)*strlen(indexEndStr));
+			tempIndexes->next->end.localStr = (char *)malloc(sizeof(char) * (strlen(indexEndStr) + 1));
 			strcpy(tempIndexes->next->end.localStr, indexEndStr);
 		}
 		else
@@ -2352,12 +2352,12 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 	if(!(*list))
 	{
 		(*list) = (dataList *)malloc(sizeof(dataList));
-		(*list)->variableName = (char *)malloc(sizeof(char)*strlen(variableName));
+		(*list)->variableName = (char *)malloc(sizeof(char) * (strlen(variableName) + 1));
 		strcpy((*list)->variableName, variableName);
 		
 		if(variableType)
 			{
-				(*list)->variableType = (char *)malloc(sizeof(char)*strlen(variableType));
+				(*list)->variableType = (char *)malloc(sizeof(char) * (strlen(variableType) + 1));
 				strcpy((*list)->variableType, variableType);
 			}
 		else
@@ -2365,7 +2365,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 		
 		if(reductionType)
 		{
-			(*list)->reductionType = (char *)malloc(sizeof(char)*strlen(reductionType));
+			(*list)->reductionType = (char *)malloc(sizeof(char) * (strlen(reductionType) + 1));
 			strcpy((*list)->reductionType, reductionType);
 		}
 		else
@@ -2383,7 +2383,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->start.localStr)
 					{
-						(*list)->indexes->start.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->start.localStr));
+						(*list)->indexes->start.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->start.localStr) + 1));
 						strcpy((*list)->indexes->start.localStr, (*indexes)->start.localStr);
 					}
 					else
@@ -2391,7 +2391,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->end.localStr)
 					{
-						(*list)->indexes->end.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->end.localStr));
+						(*list)->indexes->end.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->end.localStr) + 1));
 						strcpy((*list)->indexes->end.localStr, (*indexes)->end.localStr);
 					}
 					else
@@ -2411,7 +2411,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->start.localStr)
 					{
-						tempIndexes->next->start.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->start.localStr));
+						tempIndexes->next->start.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->start.localStr) + 1));
 						strcpy(tempIndexes->next->start.localStr, (*indexes)->start.localStr);
 					}
 					else
@@ -2419,7 +2419,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->end.localStr)
 					{
-						tempIndexes->next->end.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->end.localStr));
+						tempIndexes->next->end.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->end.localStr) + 1));
 						strcpy(tempIndexes->next->end.localStr, (*indexes)->end.localStr);
 					}
 					else
@@ -2438,12 +2438,12 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 			tempDataList = tempDataList->next;
 		
 		tempDataList->next = (dataList *)malloc(sizeof(dataList));
-		tempDataList->next->variableName = (char *)malloc(sizeof(char)*strlen(variableName));
+		tempDataList->next->variableName = (char *)malloc(sizeof(char) * (strlen(variableName) + 1));
 		strcpy(tempDataList->next->variableName, variableName);
 		
 		if(variableType)
 		{
-			tempDataList->next->variableType = (char *)malloc(sizeof(char)*strlen(variableType));
+			tempDataList->next->variableType = (char *)malloc(sizeof(char) * (strlen(variableType) + 1));
 			strcpy(tempDataList->next->variableType, variableType);
 		}
 		else
@@ -2451,7 +2451,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 			
 		if(reductionType)
 		{
-			tempDataList->next->reductionType = (char *)malloc(sizeof(char)*strlen(reductionType));
+			tempDataList->next->reductionType = (char *)malloc(sizeof(char) * (strlen(reductionType) + 1));
 			strcpy(tempDataList->next->reductionType, reductionType);
 		}
 		else
@@ -2470,7 +2470,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->start.localStr)
 					{
-						tempDataList->next->indexes->start.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->start.localStr));
+						tempDataList->next->indexes->start.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->start.localStr) + 1));
 						strcpy(tempDataList->next->indexes->start.localStr, (*indexes)->start.localStr);
 					}
 					else
@@ -2478,7 +2478,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->end.localStr)
 					{
-						tempDataList->next->indexes->end.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->end.localStr));
+						tempDataList->next->indexes->end.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->end.localStr) + 1));
 						strcpy(tempDataList->next->indexes->end.localStr, (*indexes)->end.localStr);
 					}
 					else
@@ -2498,7 +2498,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->start.localStr)
 					{
-						tempIndexes->next->start.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->start.localStr));
+						tempIndexes->next->start.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->start.localStr) + 1));
 						strcpy(tempIndexes->next->start.localStr, (*indexes)->start.localStr);
 					}
 					else
@@ -2506,7 +2506,7 @@ void addToDataList(dataList** list, char *variableName, char *variableType, char
 					
 					if((*indexes)->end.localStr)
 					{
-						tempIndexes->next->end.localStr = (char *)malloc(sizeof(char)*strlen((*indexes)->end.localStr));
+						tempIndexes->next->end.localStr = (char *)malloc(sizeof(char) * (strlen((*indexes)->end.localStr) + 1));
 						strcpy(tempIndexes->next->end.localStr, (*indexes)->end.localStr);
 					}
 					else
@@ -2540,12 +2540,12 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 		if(!(*SGList))
 		{
 			(*SGList) = (dataList *)malloc(sizeof(dataList));
-			(*SGList)->variableName = (char *)malloc(sizeof(char)*strlen((*tempList)->variableName));
+			(*SGList)->variableName = (char *)malloc(sizeof(char) * (strlen((*tempList)->variableName) + 1));
 			strcpy((*SGList)->variableName, (*tempList)->variableName);
 		
 			if((*tempList)->variableType)
 				{
-					(*SGList)->variableType = (char *)malloc(sizeof(char)*strlen((*tempList)->variableType));
+					(*SGList)->variableType = (char *)malloc(sizeof(char) * (strlen((*tempList)->variableType) + 1));
 					strcpy((*SGList)->variableType, (*tempList)->variableType);
 				}
 			else
@@ -2553,7 +2553,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 				
 			if((*tempList)->reductionType)
 				{
-					(*SGList)->reductionType = (char *)malloc(sizeof(char)*strlen((*tempList)->reductionType));
+					(*SGList)->reductionType = (char *)malloc(sizeof(char) * (strlen((*tempList)->reductionType) + 1));
 					strcpy((*SGList)->reductionType, (*tempList)->reductionType);
 				}
 			else
@@ -2570,7 +2570,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->start.localStr)
 					{
-						(*SGList)->indexes->start.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->start.localStr));
+						(*SGList)->indexes->start.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->start.localStr) + 1));
 						strcpy((*SGList)->indexes->start.localStr, tempIndexes->start.localStr);
 					}
 					else
@@ -2578,7 +2578,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->end.localStr)
 					{
-						(*SGList)->indexes->end.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->end.localStr));
+						(*SGList)->indexes->end.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->end.localStr) + 1));
 						strcpy((*SGList)->indexes->end.localStr, tempIndexes->end.localStr);
 					}
 					else
@@ -2598,7 +2598,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->start.localStr)
 					{
-						tempIndexesSG->next->start.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->start.localStr));
+						tempIndexesSG->next->start.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->start.localStr) + 1));
 						strcpy(tempIndexesSG->next->start.localStr, tempIndexes->start.localStr);
 					}
 					else
@@ -2606,7 +2606,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->end.localStr)
 					{
-						tempIndexesSG->next->end.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->end.localStr));
+						tempIndexesSG->next->end.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->end.localStr) + 1));
 						strcpy(tempIndexesSG->next->end.localStr, tempIndexes->end.localStr);
 					}
 					else
@@ -2625,12 +2625,12 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 				tempSGList = tempSGList->next;
 			
 			tempSGList->next = (dataList *)malloc(sizeof(dataList));
-			tempSGList->next->variableName = (char *)malloc(sizeof(char)*strlen((*tempList)->variableName));
+			tempSGList->next->variableName = (char *)malloc(sizeof(char) * (strlen((*tempList)->variableName) + 1));
 			strcpy(tempSGList->next->variableName, (*tempList)->variableName);
 		
 			if((*tempList)->variableType)
 				{
-					tempSGList->next->variableType = (char *)malloc(sizeof(char)*strlen((*tempList)->variableType));
+					tempSGList->next->variableType = (char *)malloc(sizeof(char) * (strlen((*tempList)->variableType) + 1));
 					strcpy(tempSGList->next->variableType, (*tempList)->variableType);
 				}
 			else
@@ -2639,7 +2639,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 			
 			if((*tempList)->reductionType)
 				{
-					tempSGList->next->reductionType = (char *)malloc(sizeof(char)*strlen((*tempList)->reductionType));
+					tempSGList->next->reductionType = (char *)malloc(sizeof(char) * (strlen((*tempList)->reductionType) + 1));
 					strcpy(tempSGList->next->reductionType, (*tempList)->reductionType);
 				}
 			else
@@ -2657,7 +2657,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->start.localStr)
 					{
-						tempSGList->next->indexes->start.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->start.localStr));
+						tempSGList->next->indexes->start.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->start.localStr) + 1));
 						strcpy(tempSGList->next->indexes->start.localStr, tempIndexes->start.localStr);
 					}
 					else
@@ -2665,7 +2665,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->end.localStr)
 					{
-						tempSGList->next->indexes->end.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->end.localStr));
+						tempSGList->next->indexes->end.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->end.localStr) + 1));
 						strcpy(tempSGList->next->indexes->end.localStr, tempIndexes->end.localStr);
 					}
 					else
@@ -2685,7 +2685,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->start.localStr)
 					{
-						tempIndexesSG->next->start.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->start.localStr));
+						tempIndexesSG->next->start.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->start.localStr) + 1));
 						strcpy(tempIndexesSG->next->start.localStr, tempIndexes->start.localStr);
 					}
 					else
@@ -2693,7 +2693,7 @@ void copyDataListToSG(dataList **SGList, dataList** tempList){
 					
 					if(tempIndexes->end.localStr)
 					{
-						tempIndexesSG->next->end.localStr = (char *)malloc(sizeof(char)*strlen(tempIndexes->end.localStr));
+						tempIndexesSG->next->end.localStr = (char *)malloc(sizeof(char) * (strlen(tempIndexes->end.localStr) + 1));
 						strcpy(tempIndexesSG->next->end.localStr, tempIndexes->end.localStr);
 					}
 					else
@@ -3040,7 +3040,7 @@ void addTaskToParallelFunction(parallel_function **GraphFunc, dataList *lists[],
 		
 		if(schedulingPolicyChunk.localStr)
 		{
-			(*tempTasks)->chunkSize.localStr = (char *)malloc(sizeof(char)*strlen(schedulingPolicyChunk.localStr));
+			(*tempTasks)->chunkSize.localStr = (char *)malloc(sizeof(char) * (strlen(schedulingPolicyChunk.localStr) + 1));
 			strcpy((*tempTasks)->chunkSize.localStr, schedulingPolicyChunk.localStr);
 		}
 		else
@@ -3138,7 +3138,7 @@ void addTaskToParallelFunction(parallel_function **GraphFunc, dataList *lists[],
 		
 		if(schedulingPolicyChunk.localStr)
 		{
-			tempTasksPtr->next->chunkSize.localStr   = (char *)malloc(sizeof(char)*strlen(schedulingPolicyChunk.localStr));
+			tempTasksPtr->next->chunkSize.localStr   = (char *)malloc(sizeof(char) * (strlen(schedulingPolicyChunk.localStr) + 1));
 			strcpy(tempTasksPtr->next->chunkSize.localStr, schedulingPolicyChunk.localStr);
 		}
 		else
@@ -3407,7 +3407,7 @@ void searchVariableList(dataList **list, char* type, char* variable){
 		{
 			if(!tempDataList->variableType)
 			{
-				tempDataList->variableType = (char *)malloc(sizeof(char)*strlen(type));
+				tempDataList->variableType = (char *)malloc(sizeof(char) * (strlen(type) + 1));
 				strcpy(tempDataList->variableType, type);
 				break;
 			}

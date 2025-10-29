@@ -3360,9 +3360,24 @@ void offlineScheduling_AssignKernelsToTasks_RoundRobin(SG** Graph){
 	task 				*tempTask;
 	kernel				**tempKernel;
 	kernel				*tempFunctionKernel;
-	int					kernelAvailability[kernels];
 	int 				i = 0;
 	bool				reassignFlag = FALSE;
+	const int 				totalHardwareThreads = maxCores * hThreads;
+	const int 				availabilityCount = (kernels > totalHardwareThreads) ? kernels : totalHardwareThreads;
+	bool				*kernelAvailability = NULL;
+
+	if(availabilityCount <= 0)
+	{
+		ERROR_COMMANDS("Invalid hardware configuration [ cores: %d, threads: %d, kernels: %d ]!", maxCores, hThreads, kernels)
+		exit(-1);
+	}
+
+	kernelAvailability = (bool*)malloc(sizeof(bool) * availabilityCount);
+	if(!kernelAvailability)
+	{
+		ERROR_COMMANDS("Failed to allocate memory for [ %s ]!", "kernel availability")
+		exit(-1);
+	}
 
 
 	while(tempGraph)
@@ -3370,9 +3385,21 @@ void offlineScheduling_AssignKernelsToTasks_RoundRobin(SG** Graph){
 		tempFunction = tempGraph->parallel_functions;
 		while(tempFunction)
 		{
+			tempFunctionKernel = tempFunction->kernels;
+			while(tempFunctionKernel)
+			{
+				if(tempFunctionKernel->id < 0 || tempFunctionKernel->id >= availabilityCount)
+				{
+					free(kernelAvailability);
+					ERROR_COMMANDS("Parallel function kernel id [ %d ] is out of range [0, %d)!", tempFunctionKernel->id, availabilityCount)
+					exit(-1);
+				}
+				tempFunctionKernel = tempFunctionKernel->next;
+			}
+
 			reassignFlag = FALSE;
 			tempFunctionKernel = tempFunction->kernels;
-			for(i = 0; i < kernels; i++)
+			for(i = 0; i < availabilityCount; i++)
 				kernelAvailability[i] = TRUE;
 			
 			// Check tasks
@@ -3479,6 +3506,8 @@ void offlineScheduling_AssignKernelsToTasks_RoundRobin(SG** Graph){
 		}
 		tempGraph = tempGraph->next;		
 	}
+
+	free(kernelAvailability);
 }
 
 
@@ -3495,8 +3524,32 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
 	kernel				**tempKernel;
 	kernel				*tempFunctionKernel;
 	kernel				*tempTempFunctionKernel;
-	int					kernelAvailability[kernels];
 	int 				i = 0;
+    int                 randomKernel = -1;
+    time_t              t;
+	bool				reassignFlag = FALSE;
+	const int 				totalHardwareThreads = maxCores * hThreads;
+	const int 				availabilityCount = (kernels > totalHardwareThreads) ? kernels : totalHardwareThreads;
+	bool				*kernelAvailability = NULL;
+
+	if(availabilityCount <= 0)
+	{
+		ERROR_COMMANDS("Invalid hardware configuration [ cores: %d, threads: %d, kernels: %d ]!", maxCores, hThreads, kernels)
+		exit(-1);
+	}
+
+	if(kernels <= 0)
+	{
+		ERROR_COMMANDS("Invalid kernel count [ %d ] for random scheduling!", kernels)
+		exit(-1);
+	}
+
+	kernelAvailability = (bool*)malloc(sizeof(bool) * availabilityCount);
+	if(!kernelAvailability)
+	{
+		ERROR_COMMANDS("Failed to allocate memory for [ %s ]!", "kernel availability")
+		exit(-1);
+	}
     int                 randomKernel = -1;
     time_t              t;
 	bool				reassignFlag = FALSE;
@@ -3507,9 +3560,21 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
 		tempFunction = tempGraph->parallel_functions;
 		while(tempFunction)
 		{
+			tempFunctionKernel = tempFunction->kernels;
+			while(tempFunctionKernel)
+			{
+				if(tempFunctionKernel->id < 0 || tempFunctionKernel->id >= availabilityCount)
+				{
+					free(kernelAvailability);
+					ERROR_COMMANDS("Parallel function kernel id [ %d ] is out of range [0, %d)!", tempFunctionKernel->id, availabilityCount)
+					exit(-1);
+				}
+				tempFunctionKernel = tempFunctionKernel->next;
+			}
+
 			reassignFlag = FALSE;
 			tempFunctionKernel = tempFunction->kernels;
-			for(i = 0; i < kernels; i++)
+			for(i = 0; i < availabilityCount; i++)
 				kernelAvailability[i] = TRUE;
 			
 			// Check tasks
@@ -3658,6 +3723,7 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
 		tempGraph = tempGraph->next;		
 	}
 		
+        free(kernelAvailability);
 }
 
 
