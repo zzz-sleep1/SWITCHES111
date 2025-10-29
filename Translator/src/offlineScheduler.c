@@ -3576,7 +3576,7 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
 			tempFunctionKernel = tempFunction->kernels;
 			for(i = 0; i < availabilityCount; i++)
 				kernelAvailability[i] = TRUE;
-			
+
 			// Check tasks
 			tempTask = tempFunction->tasks;
 			while(tempTask)
@@ -3588,7 +3588,7 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
 				{
                     // Calculate a random kernel id that exists in the function kernel list
                     do{
-                        randomKernel = rand() % kernels;
+                        randomKernel = functionKernelIds[rand() % functionKernelCount];
                         tempFunctionKernel = tempFunction->kernels;
                         while(tempFunctionKernel)
                         {
@@ -3660,7 +3660,7 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
                     {
                         // Calculate a random kernel id that exists in the function kernel list
                         do{
-                            randomKernel = rand() % kernels;
+                            randomKernel = functionKernelIds[rand() % functionKernelCount];
                             tempFunctionKernel = tempFunction->kernels;
                             while(tempFunctionKernel)
                             {
@@ -3718,6 +3718,7 @@ void offlineScheduling_AssignKernelsToTasks_Random(SG** Graph){
                 }
 				tempSection = tempSection->next;	
 			}				
+			free(functionKernelIds);
 			tempFunction = tempFunction->next;
 		}
 		tempGraph = tempGraph->next;		
@@ -3738,7 +3739,6 @@ void offlineScheduling_AssignKernelsToTasks_File(SG** Graph){
 	section 			*tempSection;
 	task 				*tempTask;
 	kernel				**tempKernel;
-	int					kernelAvailability[kernels];
 	int 				i = 0;
     FILE                *inp;
     int                 fileKernelID = -1;

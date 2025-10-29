@@ -317,6 +317,22 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                 tempFunction = tempGraph->parallel_functions;
                 while(tempFunction)
                 {
+                    const int functionKernelCount = tempFunction->number_of_kernels;
+
+                    if(functionKernelCount <= 0)
+                    {
+                        free(kernelAvailability);
+                        ERROR_COMMANDS("Parallel function [ %d ] has invalid kernel count!", tempFunction->id)
+                        exit(-1);
+                    }
+
+                    if(functionKernelCount > totalHardwareThreads)
+                    {
+                        free(kernelAvailability);
+                        ERROR_COMMANDS("Parallel function kernel count [ %d ] exceeds available hardware threads [ %d ]!", functionKernelCount, totalHardwareThreads)
+                        exit(-1);
+                    }
+
                     reassignFlag = FALSE;
                     for(a = 0; a < availabilityCount; a++)
                         kernelAvailability[a] = TRUE;
@@ -334,7 +350,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                             else
                             {
                                 do{
-                                    temp = rnd(0, ((maxCores * hThreads) - 1));
+                                    temp = rnd(0, (functionKernelCount - 1));
                                     if(kernelAvailability[temp] == TRUE  || reassignFlag == TRUE)
                                     {
                                         tempChild->sched_vector[k++] = temp;
@@ -375,7 +391,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                                 else
                                 {
                                     do{
-                                        temp = rnd(0, ((maxCores * hThreads) - 1));
+                                        temp = rnd(0, (functionKernelCount - 1));
                                         if(kernelAvailability[temp] == TRUE || reassignFlag == TRUE)
                                         {
                                             tempChild->sched_vector[k++] = temp;
@@ -406,6 +422,9 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
         }
         tempChild = tempChild->next;
     }
+
+    free(kernelAvailability);
+
      
     free(kernelAvailability);
      
