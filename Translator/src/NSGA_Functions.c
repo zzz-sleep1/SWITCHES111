@@ -237,11 +237,25 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
     kernel				**tempKernel;
     Child               *tempChild = (*population)->child;
     
-    int					kernelAvailability[kernels];
-    bool				reassignFlag = FALSE;
+    const int                           totalHardwareThreads = maxCores * hThreads;
+    bool                                *kernelAvailability = NULL;
+    bool                                reassignFlag = FALSE;
     int                 temp = -1;
 
-    
+    if(totalHardwareThreads <= 0)
+    {
+        ERROR_COMMANDS("Invalid hardware configuration [ cores: %d, threads: %d ]!", maxCores, hThreads)
+        exit(-1);
+    }
+
+    kernelAvailability = (bool*)malloc(sizeof(bool) * totalHardwareThreads);
+    if(!kernelAvailability)
+    {
+        ERROR_COMMANDS("Failed to allocate memory for [ %s ]!", "kernel availability")
+        exit(-1);
+    }
+
+
     for(j = 0; j < nsga->population; j++)
     {
         k = 0;
@@ -303,8 +317,24 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                 tempFunction = tempGraph->parallel_functions;
                 while(tempFunction)
                 {
+                    const int functionKernelCount = tempFunction->number_of_kernels;
+
+                    if(functionKernelCount <= 0)
+                    {
+                        free(kernelAvailability);
+                        ERROR_COMMANDS("Parallel function [ %d ] has invalid kernel count!", tempFunction->id)
+                        exit(-1);
+                    }
+
+                    if(functionKernelCount > totalHardwareThreads)
+                    {
+                        free(kernelAvailability);
+                        ERROR_COMMANDS("Parallel function kernel count [ %d ] exceeds available hardware threads [ %d ]!", functionKernelCount, totalHardwareThreads)
+                        exit(-1);
+                    }
+
                     reassignFlag = FALSE;
-                    for(a = 0; a < kernels; a++)
+                    for(a = 0; a < functionKernelCount; a++)
                         kernelAvailability[a] = TRUE;
                     
                     tempTask = tempFunction->tasks;
@@ -320,7 +350,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                             else
                             {
                                 do{
-                                    temp = rnd(0, ((maxCores * hThreads) - 1));
+                                    temp = rnd(0, (functionKernelCount - 1));
                                     if(kernelAvailability[temp] == TRUE  || reassignFlag == TRUE)
                                     {
                                         tempChild->sched_vector[k++] = temp;
@@ -330,7 +360,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                                 }while(1);
                             }
                             
-                            for(a = 0; a < kernels; a++)
+                            for(a = 0; a < functionKernelCount; a++)
                             {
                                 if(kernelAvailability[a] == TRUE)
                                 {
@@ -361,7 +391,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                                 else
                                 {
                                     do{
-                                        temp = rnd(0, ((maxCores * hThreads) - 1));
+                                        temp = rnd(0, (functionKernelCount - 1));
                                         if(kernelAvailability[temp] == TRUE || reassignFlag == TRUE)
                                         {
                                             tempChild->sched_vector[k++] = temp;
@@ -371,7 +401,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
                                     }while(1);
                                 }
                                 
-                                for(a = 0; a < kernels; a++)
+                                for(a = 0; a < functionKernelCount; a++)
                                 {
                                     if(kernelAvailability[a] == TRUE)
                                     {
@@ -392,6 +422,9 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
         }
         tempChild = tempChild->next;
     }
+
+    free(kernelAvailability);
+
      
      
     /* SOLUTION 2 BUT DOESN'T TAKE INTO ACCOUNT THE TASKS TO BE EXECUTED BY MASTER_THREAD
