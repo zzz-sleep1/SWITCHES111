@@ -1,0 +1,31 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.out
+*.exe
+
+# Binaries in this project
+Translator/switches
+Translator/src/switches
+Translator/Examples/MMULT/sw_mmult
+Translator/Examples/**/sw_*_L
+Translator/Examples/**/sw_*_MIC
+Translator/Examples/**/run.sh
+
+# Generated dirs & results
+Translator/Examples/**/Generations/
+Translator/Examples/**/Results/
+Translator/Examples/**/time.res
+Translator/Examples/**/power.res
+Translator/Examples/**/thermal.res
+*.res
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Misc
+.DS_Store

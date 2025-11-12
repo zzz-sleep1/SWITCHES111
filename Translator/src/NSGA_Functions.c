@@ -243,7 +243,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
 
     
     for(j = 0; j < nsga->population; j++)
-    {
+    {fprintf(stderr, "J-> %d,   population -> %d\n", j, nsga->population);
         k = 0;
         tempGraph = *Graph;
         
@@ -391,6 +391,7 @@ void NSGA_initializePopulation(SG** Graph, Population** population){
             } 
         }
         tempChild = tempChild->next;
+        fprintf(stderr, "J-> %d,   population -> %d\n", j, nsga->population);
     }
      
      
